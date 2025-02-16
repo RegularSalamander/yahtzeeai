@@ -2,10 +2,44 @@
     <head>
         <title>YahtzeeAI</title>
 
+        <link rel="stylesheet" href="style.css"></link>
+
         <script src="script.js"> </script>
     </head>
 
     <body>
-        
+        <h1>YahtzeeAI</h1>
+        <main>
+            <div class="maincontainer f2">
+                <div class="f2 fcol">
+                    <div class="playercontainer fcol fcen">
+                        <button><b>Roll Dice</b></button>
+                        <div class="dicecontainer">
+                            <p>dice go here</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="f1 fcen">
+                    <p>scorecard goes here</p>
+                </div>
+                
+            </div>
+
+            <div class="f1 fcol">
+                <div class="maincontainer f1 fcol">
+                    <select id="opponentselect">
+                        <option value="ai1">No Opponent</option>
+                        <option value="ai1">AI Placeholder 1</option>
+                        <option value="ai2">AI Placeholder 2</option>
+                    </select>
+    
+                    <p id="opponentinfo">Placeholder. Info about AI/opponent goes here.</p>
+                </div>
+    
+                <div class="maincontainer f1 fcol">
+                    <p>Game options go here</p>
+                </div>
+            </div>
+        </main>
     </body>
 </html>
