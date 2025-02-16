@@ -18,6 +18,6 @@ function rollDice(player, timeLeft) {
     if(timeLeft > 0)
         setTimeout(
             () => rollDice(player, timeLeft - 1),
-            50
+            150 -timeLeft*14
         )
 }
