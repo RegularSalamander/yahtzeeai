@@ -64,32 +64,32 @@
                         </tr>
                         <tr>
                             <th>Ones</th>
-                            <td id="player0scoreones" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scoreones" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scoreones" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Twos</th>
-                            <td id="player0scoretwos" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scoretwos" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scoretwos" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Threes</th>
-                            <td id="player0scorethrees" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scorethrees" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scorethrees" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Fours</th>
-                            <td id="player0scorefours" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scorefours" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scorefours" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Fives</th>
-                            <td id="player0scorefives" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scorefives" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scorefives" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Sixes</th>
-                            <td id="player0scoresixes" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scoresixes" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scoresixes" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
@@ -114,37 +114,37 @@
                         </tr>
                         <tr>
                             <th>3 of a Kind</th>
-                            <td id="player0scorethreeofakind" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scorethreeofakind" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scorethreeofakind" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>4 of a Kind</th>
-                            <td id="player0scorefourofakind" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scorefourofakind" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scorefourofakind" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Full House</th>
-                            <td id="player0scorefullhouse" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scorefullhouse" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scorefullhouse" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Small Straight</th>
-                            <td id="player0scoresmallstraight" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scoresmallstraight" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scoresmallstraight" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Large Straight</th>
-                            <td id="player0scorelargestraight" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scorelargestraight" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scorelargestraight" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>YAHTZEE</th>
-                            <td id="player0scoreyahtzee" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scoreyahtzee" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scoreyahtzee" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Chance</th>
-                            <td id="player0scorechance" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player0scorechance" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                             <td id="player1scorechance" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
@@ -183,12 +183,14 @@
                         <option value="player">Player</option>
                         <option value="random">Random</option>
                         <option value="randombest">Random Greedy</option>
+                        <option value="expectedbestgreedy">Expected-Best Greedy</option>
                     </select>
                     <select id="agentselect1">
                         <option value="player">Player</option>
                         <option selected="selected" value="noopponent">No Opponent</option>
                         <option value="random">Random</option>
                         <option value="randombest">Random Greedy</option>
+                        <option value="expectedbestgreedy">Expected-Best Greedy</option>
                     </select>
     
                     <p id="opponentinfo">Placeholder. Info about AI/opponent goes here.</p>

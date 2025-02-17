@@ -51,7 +51,7 @@ function clickRoll(byPlayer) {
 //dice rolling logic and animation
 function rollDiceAnimation(timeLeft, whichRolling) {
     //end of animation
-    if(timeLeft == 0 || true) {
+    if(timeLeft == 0) {
         currentlyRolling = false;
         games[turn].rollDice(whichRolling);
         reflectDice();
