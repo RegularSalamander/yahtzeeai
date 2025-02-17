@@ -31,11 +31,11 @@ let scores = {
     "chance": [null,null]
 }
 let otherScores = {
-    "uppertotal": [null,null],
-    "upperbonus": [null,null],
-    "yahtzeebonus": [null,null],
-    "lowertotal": [null,null],
-    "total": [null,null]
+    "uppertotal": [0,0],
+    "upperbonus": [0,0],
+    "yahtzeebonus": [0,0],
+    "lowertotal": [0,0],
+    "total": [0,0]
 }
 
 //return a random int from min to max inclusive
@@ -61,8 +61,8 @@ function clickDie(obj) {
 function rollDice(timeLeft) {
     //start and end of roll
     if(timeLeft == null) { //start roll animation
-        if(gameState == "thirdchoice" || currentlyRolling)
-            return; //no rolling allowed
+        // if(gameState == "thirdchoice" || currentlyRolling)
+        //     return; //no rolling allowed
         timeLeft = 10;
         currentlyRolling = true;
     } else if(timeLeft == 0) {
@@ -222,5 +222,26 @@ function changeTurn() {
         $(`player1die${i}`).setAttribute("data-rolling", true);
     }
 
+    setScoreTotals(0);
+    setScoreTotals(1);
+
     gameState = "initial";
+}
+
+function setScoreTotals(p) {
+    otherScores.uppertotal[p] = 
+        scores.ones[p] + scores.twos[p] + scores.threes[p] +
+        scores.fours[p] + scores.fives[p] + scores.sixes[p];
+    otherScores.upperbonus[p] = otherScores.uppertotal[p] > 63 ? 35 : 0;
+
+    otherScores.lowertotal[p] =
+        scores.threeofakind[p] + scores.fourofakind[p] + scores.fullhouse[p] +
+        scores.smallstraight[p] + scores.largestraight[p] + scores.yahtzee[p] + scores.chance[p];
+    
+    otherScores.total[p] = otherScores.upperbonus[p] + otherScores.uppertotal[p] + otherScores.lowertotal[p];
+    
+
+    for(let i in otherScores) {
+        $(`player${p}score${i}`).innerHTML = otherScores[i][p];
+    }
 }
