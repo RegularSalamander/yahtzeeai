@@ -51,7 +51,7 @@ function clickRoll(byPlayer) {
 //dice rolling logic and animation
 function rollDiceAnimation(timeLeft, whichRolling) {
     //end of animation
-    if(timeLeft == 0) {
+    if(timeLeft == 0 || true) {
         currentlyRolling = false;
         games[turn].rollDice(whichRolling);
         reflectDice();
@@ -67,10 +67,11 @@ function rollDiceAnimation(timeLeft, whichRolling) {
     games[turn].setDiceRandomDifferent(whichRolling);
     reflectDice();
 
+    const animationTime = 150;
     //continue rolling animation
     setTimeout(
         () => rollDiceAnimation(timeLeft - 1, whichRolling),
-        150 -timeLeft*14
+        animationTime -timeLeft*(animationTime*0.9/10)
     )
 }
 

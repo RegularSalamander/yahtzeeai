@@ -1,4 +1,24 @@
+const repeatGame = true;
+
+let gamesCounted = 0;
+let averageScore = 0;
+
 function agentChoose(game, name) {
+    if(game.state == "initial") {
+        clickRoll();
+        return;
+    }
+
+    let scoreOptions = [];
+    for(let i in game.scoreOptions) {
+        if(game.scoreOptions[i] != null)
+            scoreOptions.push(i);
+    }
+    if(scoreOptions.length == 0) {
+        scoreAverage(game.totals["total"]);
+        return;
+    }
+
     if(name == "random") {
         if(game.state != "final") {
             let toRoll = [false,false,false,false,false]
@@ -8,12 +28,7 @@ function agentChoose(game, name) {
             setRolling(toRoll);
             clickRoll();
         } else {
-            let options = [];
-            for(let i in game.scoreOptions) {
-                if(game.scoreOptions[i] != null)
-                    options.push(i);
-            }
-            let choice = options[randint(0, options.length-1)];
+            let choice = scoreOptions[randint(0, scoreOptions.length-1)];
             clickScore(`player${turn}score${choice}`);
         }
     }
@@ -33,4 +48,17 @@ function setRolling(toSet) {
             clickDie(`player${turn}die${i}`);
         }
     }
+}
+
+function scoreAverage(score) {
+    if(!repeatGame) return;
+
+    if(gamesCounted == 0)
+        averageScore = score;
+    else
+        averageScore = (averageScore * gamesCounted + score)/(gamesCounted + 1);
+    gamesCounted++;
+    
+    console.log(gamesCounted, averageScore);
+    setTimeout(resetGame, 100);
 }
