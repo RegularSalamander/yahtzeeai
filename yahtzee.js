@@ -48,7 +48,7 @@ class Yahtzee {
             this.state = "second";
         } else if(this.state == "second") {
             this.setDiceRandom(whichRolling);
-            this.state = "second";
+            this.state = "final";
         } else {
             return false;
         }
