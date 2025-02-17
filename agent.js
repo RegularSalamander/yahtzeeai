@@ -31,6 +31,17 @@ function agentChoose(game, name) {
             let choice = scoreOptions[randint(0, scoreOptions.length-1)];
             clickScore(`player${turn}score${choice}`);
         }
+    } else if(name == "randombest") {
+        if(game.state != "final") {
+            let toRoll = [false,false,false,false,false]
+            for(let i = 0; i < 5; i++) {
+                toRoll[i] = Math.random() < 0.5;
+            }
+            setRolling(toRoll);
+            clickRoll();
+        } else {
+            chooseBestScore(game.scoreOptions);
+        }
     }
 }
 
@@ -48,6 +59,18 @@ function setRolling(toSet) {
             clickDie(`player${turn}die${i}`);
         }
     }
+}
+
+function chooseBestScore(options) {
+    let max = 0;
+    let best = "";
+    for(let i in options) {
+        if(options[i] != null && options[i] >= max) {
+            max = options[i];
+            best = i;
+        }
+    }
+    clickScore(`player${turn}score${best}`);
 }
 
 function scoreAverage(score) {
