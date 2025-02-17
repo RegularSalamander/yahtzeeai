@@ -9,21 +9,31 @@ let games = [
     new Yahtzee()
 ]
 
+let agentnames = [
+    "player",
+    "noopponent"
+];
+
 //handles switching a die from rolling vs held state
-function clickDie(obj) {
+function clickDie(id, byPlayer) {
+    let obj = $(id);
+
     //only change dice rolling state in certain gamestates
     if(games[turn].state == "initial" ||
         currentlyRolling ||
-        turn != parseInt(obj.id.charAt(6))
+        turn != parseInt(obj.id.charAt(6)) ||
+        (byPlayer && agentnames[turn] != "player")
     ) return;
 
     let rolling = obj.getAttribute("data-rolling") == "true";
     obj.setAttribute("data-rolling", !rolling);
 }
 
-function clickRoll() {
-    if(games[turn].state == "final" || currentlyRolling)
-        return; //no rolling allowed
+function clickRoll(byPlayer) {
+    if(games[turn].state == "final" ||
+        currentlyRolling ||
+        (byPlayer && agentnames[turn] != "player")
+    ) return; //no rolling allowed
     
     currentlyRolling = true;
 
@@ -35,17 +45,21 @@ function clickRoll() {
         $(`player${turn}die4`).getAttribute("data-rolling") == "true"
     ];
 
-    rollDice(10, whichRolling);
+    rollDiceAnimation(10, whichRolling);
 }
 
 //dice rolling logic and animation
-function rollDice(timeLeft, whichRolling) {
+function rollDiceAnimation(timeLeft, whichRolling) {
     //end of animation
     if(timeLeft == 0) {
         currentlyRolling = false;
         games[turn].rollDice(whichRolling);
         reflectDice();
         reflectScore();
+
+        if(agentnames[turn] != "player") {
+            agentChoose(games[turn], agentnames[turn]);
+        }
         return;
     }
 
@@ -55,16 +69,19 @@ function rollDice(timeLeft, whichRolling) {
 
     //continue rolling animation
     setTimeout(
-        () => rollDice(timeLeft - 1, whichRolling),
+        () => rollDiceAnimation(timeLeft - 1, whichRolling),
         150 -timeLeft*14
     )
 }
 
 //called when a score is clicked, locks in that score
-function clickScore(obj) {
+function clickScore(id, byPlayer) {
+    let obj = $(id);
+
     if(obj.getAttribute("data-clickable") != "true" ||
        games[turn].state == "initial" ||
-       turn != parseInt(obj.id.charAt(6))
+       turn != parseInt(obj.id.charAt(6))  ||
+       (byPlayer && agentnames[turn] != "player")
     ) return;
 
     //remove "playerNscore" from beginning of id
@@ -104,6 +121,12 @@ function changeTurn() {
 
     games[turn].calcScoreTotals();
     reflectScoreTotals();
+
+    if(agentnames[turn] == "noopponent") {
+        changeTurn();
+    } else if(agentnames[turn] != "player") {
+        agentChoose(games[turn], agentnames[turn]);
+    }
 }
 
 function reflectDice() {
@@ -130,6 +153,37 @@ function reflectScore() {
 
 function reflectScoreTotals(p) {
     for(let i in games[turn].totals) {
-        $(`player${turn}score${i}`).innerHTML = games[turn].totals[i];
+        $(`player0score${i}`).innerHTML = games[0].totals[i];
+        $(`player1score${i}`).innerHTML = games[1].totals[i];
+    }
+}
+
+function resetGame() {
+    turn = 0;
+
+    games = [
+        new Yahtzee(),
+        new Yahtzee()
+    ]
+
+    //reset all dice rolling states
+    for(let i = 0; i < 5; i++) {
+        $(`player0die${i}`).setAttribute("data-rolling", true);
+        $(`player1die${i}`).setAttribute("data-rolling", true);
+    }
+    for(let i in games[turn].score) {
+        $(`player0score${i}`).innerHTML = "";
+        $(`player1score${i}`).innerHTML = "";
+    }
+    $(`player0button`).disabled = false;
+    $(`player1button`).disabled = true;
+
+    reflectScoreTotals();
+
+    agentnames[0] = $(`agentselect0`).value;
+    agentnames[1] = $(`agentselect1`).value;
+
+    if(agentnames[turn] != "player") {
+        agentChoose(games[turn], agentnames[turn]);
     }
 }

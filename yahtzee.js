@@ -28,6 +28,7 @@ class Yahtzee {
             "lowertotal": 0,
             "total": 0
         }
+        this.scoreOptions = {};
 
         this.state = "initial";
         /*

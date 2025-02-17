@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="style.css"></link>
 
         <script src="yahtzee.js"> </script>
+        <script src="agent.js"> </script>
         <script src="script.js"> </script>
     </head>
 
@@ -14,41 +15,41 @@
             <div class="maincontainer f2">
                 <div class="f2 fcol">
                     <div class="playercontainer f1">
-                        <button id="player0button" onclick="clickRoll()"><b>Roll Dice</b></button>
+                        <button id="player0button" onclick="clickRoll(true)"><b>Roll Dice</b></button>
                         <div class="dicecontainer">
-                            <div class="die" id="player0die0" data-rolling=true onclick="clickDie(this)">
+                            <div class="die" id="player0die0" data-rolling=true onclick="clickDie(this.id, true)">
                                 <img src="images/1.png" />
                             </div>
-                            <div class="die" id="player0die1" data-rolling=true onclick="clickDie(this)">
+                            <div class="die" id="player0die1" data-rolling=true onclick="clickDie(this.id, true)">
                                 <img src="images/2.png" />
                             </div>
-                            <div class="die" id="player0die2" data-rolling=true onclick="clickDie(this)">
+                            <div class="die" id="player0die2" data-rolling=true onclick="clickDie(this.id, true)">
                                 <img src="images/3.png" />
                             </div>
-                            <div class="die" id="player0die3" data-rolling=true onclick="clickDie(this)">
+                            <div class="die" id="player0die3" data-rolling=true onclick="clickDie(this.id, true)">
                                 <img src="images/4.png" />
                             </div>
-                            <div class="die" id="player0die4" data-rolling=true onclick="clickDie(this)">
+                            <div class="die" id="player0die4" data-rolling=true onclick="clickDie(this.id, true)">
                                 <img src="images/5.png" />
                             </div>
                         </div>
                     </div>
                     <div class="playercontainer f1">
-                        <button disabled id="player1button" onclick="clickRoll()"><b>Roll Dice</b></button>
+                        <button disabled id="player1button" onclick="clickRoll(true)"><b>Roll Dice</b></button>
                         <div class="dicecontainer">
-                            <div class="die" id="player1die0" data-rolling=true onclick="clickDie(this)">
+                            <div class="die" id="player1die0" data-rolling=true onclick="clickDie(this.id, true)">
                                 <img src="images/1.png" />
                             </div>
-                            <div class="die" id="player1die1" data-rolling=true onclick="clickDie(this)">
+                            <div class="die" id="player1die1" data-rolling=true onclick="clickDie(this.id, true)">
                                 <img src="images/2.png" />
                             </div>
-                            <div class="die" id="player1die2" data-rolling=true onclick="clickDie(this)">
+                            <div class="die" id="player1die2" data-rolling=true onclick="clickDie(this.id, true)">
                                 <img src="images/3.png" />
                             </div>
-                            <div class="die" id="player1die3" data-rolling=true onclick="clickDie(this)">
+                            <div class="die" id="player1die3" data-rolling=true onclick="clickDie(this.id, true)">
                                 <img src="images/4.png" />
                             </div>
-                            <div class="die" id="player1die4" data-rolling=true onclick="clickDie(this)">
+                            <div class="die" id="player1die4" data-rolling=true onclick="clickDie(this.id, true)">
                                 <img src="images/5.png" />
                             </div>
                         </div>
@@ -63,33 +64,33 @@
                         </tr>
                         <tr>
                             <th>Ones</th>
-                            <td id="player0scoreones" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scoreones" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scoreones" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scoreones" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Twos</th>
-                            <td id="player0scoretwos" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scoretwos" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scoretwos" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scoretwos" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Threes</th>
-                            <td id="player0scorethrees" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scorethrees" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scorethrees" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scorethrees" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Fours</th>
-                            <td id="player0scorefours" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scorefours" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scorefours" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scorefours" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Fives</th>
-                            <td id="player0scorefives" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scorefives" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scorefives" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scorefives" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Sixes</th>
-                            <td id="player0scoresixes" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scoresixes" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scoresixes" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scoresixes" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -98,13 +99,13 @@
                         </tr>
                         <tr>
                             <th>Subtotal</th>
-                            <td id="player0scoreuppertotal" onclick="clickScore(this)"></td>
-                            <td id="player1scoreuppertotal" onclick="clickScore(this)"></td>
+                            <td id="player0scoreuppertotal" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scoreuppertotal" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Bonus</th>
-                            <td id="player0scoreupperbonus" onclick="clickScore(this)"></td>
-                            <td id="player1scoreupperbonus" onclick="clickScore(this)"></td>
+                            <td id="player0scoreupperbonus" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scoreupperbonus" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -113,38 +114,38 @@
                         </tr>
                         <tr>
                             <th>3 of a Kind</th>
-                            <td id="player0scorethreeofakind" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scorethreeofakind" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scorethreeofakind" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scorethreeofakind" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>4 of a Kind</th>
-                            <td id="player0scorefourofakind" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scorefourofakind" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scorefourofakind" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scorefourofakind" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Full House</th>
-                            <td id="player0scorefullhouse" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scorefullhouse" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scorefullhouse" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scorefullhouse" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Small Straight</th>
-                            <td id="player0scoresmallstraight" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scoresmallstraight" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scoresmallstraight" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scoresmallstraight" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Large Straight</th>
-                            <td id="player0scorelargestraight" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scorelargestraight" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scorelargestraight" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scorelargestraight" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>YAHTZEE</th>
-                            <td id="player0scoreyahtzee" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scoreyahtzee" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scoreyahtzee" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scoreyahtzee" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Chance</th>
-                            <td id="player0scorechance" data-clickable="true" onclick="clickScore(this)"></td>
-                            <td id="player1scorechance" data-clickable="false" onclick="clickScore(this)"></td>
+                            <td id="player0scorechance" data-clickable="true" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scorechance" data-clickable="false" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -153,13 +154,13 @@
                         </tr>
                         <tr>
                             <th>YAHTZEE BONUS</th>
-                            <td id="player0scoreyahtzeebonus" onclick="clickScore(this)"></td>
-                            <td id="player1scoreyahtzeebonus" onclick="clickScore(this)"></td>
+                            <td id="player0scoreyahtzeebonus" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scoreyahtzeebonus" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <th>Subtotal</th>
-                            <td id="player0scorelowertotal" onclick="clickScore(this)"></td>
-                            <td id="player1scorelowertotal" onclick="clickScore(this)"></td>
+                            <td id="player0scorelowertotal" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scorelowertotal" onclick="clickScore(this.id, true)"></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -168,8 +169,8 @@
                         </tr>
                         <tr>
                             <th>Total</th>
-                            <td id="player0scoretotal" onclick="clickScore(this)"></td>
-                            <td id="player1scoretotal" onclick="clickScore(this)"></td>
+                            <td id="player0scoretotal" onclick="clickScore(this.id, true)"></td>
+                            <td id="player1scoretotal" onclick="clickScore(this.id, true)"></td>
                         </tr>
                     </table>
                 </div>
@@ -178,13 +179,20 @@
 
             <div class="f1 fcol">
                 <div class="maincontainer f1 fcol">
-                    <select id="opponentselect">
-                        <option value="ai1">No Opponent</option>
-                        <option value="ai1">AI Placeholder 1</option>
+                    <select id="agentselect0">
+                        <option value="player">Player</option>
+                        <option value="random">Random</option>
                         <option value="ai2">AI Placeholder 2</option>
+                    </select>
+                    <select id="agentselect1">
+                        <option value="player">Player</option>
+                        <option selected="selected" value="noopponent">No Opponent</option>
+                        <option value="random">Random</option>
                     </select>
     
                     <p id="opponentinfo">Placeholder. Info about AI/opponent goes here.</p>
+
+                    <button onclick="resetGame()">Reset Game</button>
                 </div>
     
                 <div class="maincontainer f1 fcol">
