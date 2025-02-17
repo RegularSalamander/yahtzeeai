@@ -61,8 +61,8 @@ function clickDie(obj) {
 function rollDice(timeLeft) {
     //start and end of roll
     if(timeLeft == null) { //start roll animation
-        // if(gameState == "thirdchoice" || currentlyRolling)
-        //     return; //no rolling allowed
+        if(gameState == "thirdchoice" || currentlyRolling)
+            return; //no rolling allowed
         timeLeft = 10;
         currentlyRolling = true;
     } else if(timeLeft == 0) {
