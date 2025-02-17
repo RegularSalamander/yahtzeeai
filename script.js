@@ -1,6 +1,16 @@
 const $ = (id) => document.getElementById(id);
 
 let turn = 0;
+let gameState = "initial"
+let currentlyRolling = false;
+/*
+    gamestates:
+    - initial: before first roll
+    - firstchoice: choose which dice to roll again or choose score
+    - secondchoice: choose which dice to roll again or choose score
+    - thirdchoice: choose which score to use
+*/
+
 let diceStates = [
     [1,2,3,4,5],
     [1,2,3,4,5]
@@ -12,64 +22,104 @@ let scores = {
     "fours": [null,null],
     "fives": [null,null],
     "sixes": [null,null],
-    "uppertotal": [null,null],
-    "upperbonus": [null,null],
     "threeofakind": [null,null],
     "fourofakind": [null,null],
     "fullhouse": [null,null],
     "smallstraight": [null,null],
     "largestraight": [null,null],
     "yahtzee": [null,null],
-    "chance": [null,null],
+    "chance": [null,null]
+}
+let otherScores = {
+    "uppertotal": [null,null],
+    "upperbonus": [null,null],
     "yahtzeebonus": [null,null],
     "lowertotal": [null,null],
     "total": [null,null]
 }
 
-
+//return a random int from min to max inclusive
 function randint(min, max) {
     return Math.floor(Math.random()*max) + min;
 }
 
+//handles switching a die from rolling vs held state
 function clickDie(obj) {
+    //only change dice rolling state in certain gamestates
+    if(gameState == "initial")
+        return;
+
+    //only move your own dice
+    if(turn != parseInt(obj.id.charAt(6)))
+        return;
+
     let rolling = obj.getAttribute("data-rolling") == "true"
     obj.setAttribute("data-rolling", !rolling);
 }
 
-function rollDice(player, timeLeft) {
-    if(timeLeft == null) timeLeft = 10;
+//dice rolling logic and animation
+function rollDice(timeLeft) {
+    //start and end of roll
+    if(timeLeft == null) { //start roll animation
+        if(gameState == "thirdchoice" || currentlyRolling)
+            return; //no rolling allowed
+        timeLeft = 10;
+        currentlyRolling = true;
+    } else if(timeLeft == 0) {
+        currentlyRolling = false;
+        scoreDice();
 
+        //transition states
+        if(gameState == "initial")
+            gameState = "firstchoice";
+        else if(gameState == "firstchoice")
+            gameState = "secondchoice";
+        else if(gameState == "secondchoice")
+            gameState = "thirdchoice";
+
+        return;
+    }
+
+    //randomize dice
+    setDiceRandom();
+
+    //continue rolling animation
+    setTimeout(
+        () => rollDice(timeLeft - 1),
+        150 -timeLeft*14
+    )
+}
+
+//randomly set dice, called multiple times in dice rolling animation
+//avoids setting dice to previously rolled side to make the animation look smoother,
+//but should disable this behavior if the animation is disabled
+function setDiceRandom() {
     for(let i = 0; i < 5; i++) {
-        if($(`player${player}die${i}`).getAttribute("data-rolling") != "true")
+        if($(`player${turn}die${i}`).getAttribute("data-rolling") != "true")
             continue;
         
-        let prev = diceStates[player][i];
+        let prev = diceStates[turn][i];
         let roll;
         do {
             roll = randint(1, 6);
         } while(roll == prev);
 
-        diceStates[player][i] = roll;
-        $(`player${player}die${i}`).firstElementChild.setAttribute("src", `images/${roll}.png`);
+        diceStates[turn][i] = roll;
+        $(`player${turn}die${i}`).firstElementChild.setAttribute("src", `images/${roll}.png`);
     }
-
-    if(timeLeft > 0)
-        setTimeout(
-            () => rollDice(player, timeLeft - 1),
-            150 -timeLeft*14
-        )
 }
 
+//set the image attributes to display dice states
 function setDiceImgs() {
-    for(let player = 1; player <= 2; player++) {
-        for(let i = 1; i <= 5; i++) {
-            $(`player${player}die${i}`).firstElementChild.setAttribute("src", `images/${diceStates[player-1][i-1]}.png`);
-        }
+    for(let i = 0; i < 5; i++) {
+        $(`player0die${i}`).firstElementChild.setAttribute("src", `images/${diceStates[0][i]}.png`);
+        $(`player1die${i}`).firstElementChild.setAttribute("src", `images/${diceStates[1][i]}.png`);
     }
 }
 
-function scoreDice(player) {
-    let dice = diceStates[player];
+//calculate scores for current player's dice
+function scoreDice() {
+    let dice = diceStates[turn];
     let diceTypes = [0, 0, 0, 0, 0, 0];
     for(let i = 0; i < 5; i++)
         diceTypes[dice[i] - 1]++;
@@ -116,6 +166,61 @@ function scoreDice(player) {
     scoreOptions["chance"] = diceSum;
 
     for(let i in scoreOptions) {
-        $(`player${player}score${i}`).innerHTML = scoreOptions[i];
+        if(scores[i][turn] == null)
+            $(`player${turn}score${i}`).innerHTML = scoreOptions[i];
     }
+}
+
+//called when a score is clicked, locks in that score
+function setScore(obj) {
+    //must roll dice before choosing a score
+    if(gameState == "initial")
+        return;
+
+    //must choose a score for your own turn
+    if(turn != parseInt(obj.id.charAt(6)))
+        return;
+
+    //remove "playerNscore" from beginning of id
+    let scoreChoice = obj.id.substring(12);
+
+    if(scores[scoreChoice][turn] == null) {
+        scores[scoreChoice][turn] = parseInt(obj.innerHTML);
+
+        changeTurn();
+    }
+}
+
+//switch turn and all visual states involved
+function changeTurn() {
+    //lock in scores
+    for(let i in scores) {
+        $(`player${turn}score${i}`).setAttribute("data-clickable", false);
+
+        if(scores[i][turn] == null)
+            $(`player${turn}score${i}`).innerHTML = "";
+    }
+
+    //disable controls
+    $(`player${turn}button`).disabled = true;
+
+    //actually swap turn
+    turn = 1 - turn;
+
+    //make available scores clickable
+    for(let i in scores) {
+        if(scores[i][turn] == null)
+            $(`player${turn}score${i}`).setAttribute("data-clickable", true);
+    }
+
+    //allow roll button
+    $(`player${turn}button`).disabled = false;
+
+    //reset all dice positions
+    for(let i = 0; i < 5; i++) {
+        $(`player0die${i}`).setAttribute("data-rolling", true);
+        $(`player1die${i}`).setAttribute("data-rolling", true);
+    }
+
+    gameState = "initial";
 }
