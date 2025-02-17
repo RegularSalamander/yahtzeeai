@@ -28,12 +28,12 @@ let scores = {
     "smallstraight": [null,null],
     "largestraight": [null,null],
     "yahtzee": [null,null],
-    "chance": [null,null]
+    "chance": [null,null],
+    "yahtzeebonus": [null,null]
 }
 let otherScores = {
     "uppertotal": [0,0],
     "upperbonus": [0,0],
-    "yahtzeebonus": [0,0],
     "lowertotal": [0,0],
     "total": [0,0]
 }
@@ -163,16 +163,31 @@ function scoreDice() {
     if(Math.max(...diceTypes) >= 5)
         scoreOptions["yahtzee"] = 50;
 
+    if(scoreOptions["yahtzee"] && scores.yahtzee[turn] > 0) {
+        $(`player${turn}scoreyahtzeebonus`).setAttribute("data-clickable", true);
+        scoreOptions["yahtzeebonus"] = (scores["yahtzeebonus"][turn] || 0) + 100;
+    } else {
+        $(`player${turn}scoreyahtzeebonus`).setAttribute("data-clickable", false);
+    }
+
     scoreOptions["chance"] = diceSum;
 
     for(let i in scoreOptions) {
         if(scores[i][turn] == null)
             $(`player${turn}score${i}`).innerHTML = scoreOptions[i];
     }
+
+    //edge case for yahtzee bonus, can be filled in multiple times so is not null
+    if(scoreOptions["yahtzeebonus"])
+        $(`player${turn}scoreyahtzeebonus`).innerHTML = scoreOptions["yahtzeebonus"];
 }
 
 //called when a score is clicked, locks in that score
 function setScore(obj) {
+    //only click squares we've allowed
+    if(obj.getAttribute("data-clickable") != "true")
+        return;
+
     //must roll dice before choosing a score
     if(gameState == "initial")
         return;
@@ -184,11 +199,8 @@ function setScore(obj) {
     //remove "playerNscore" from beginning of id
     let scoreChoice = obj.id.substring(12);
 
-    if(scores[scoreChoice][turn] == null) {
-        scores[scoreChoice][turn] = parseInt(obj.innerHTML);
-
-        changeTurn();
-    }
+    scores[scoreChoice][turn] = parseInt(obj.innerHTML);
+    changeTurn();
 }
 
 //switch turn and all visual states involved
@@ -229,16 +241,19 @@ function changeTurn() {
 }
 
 function setScoreTotals(p) {
-    otherScores.uppertotal[p] = 
-        scores.ones[p] + scores.twos[p] + scores.threes[p] +
-        scores.fours[p] + scores.fives[p] + scores.sixes[p];
-    otherScores.upperbonus[p] = otherScores.uppertotal[p] > 63 ? 35 : 0;
+    otherScores["uppertotal"][p] = 
+        scores["ones"][p] + scores["twos"][p] + scores["threes"][p] +
+        scores["fours"][p] + scores["fives"][p] + scores["sixes"][p];
+    otherScores["upperbonus"][p] = otherScores["uppertotal"][p] > 63 ? 35 : 0;
 
-    otherScores.lowertotal[p] =
-        scores.threeofakind[p] + scores.fourofakind[p] + scores.fullhouse[p] +
-        scores.smallstraight[p] + scores.largestraight[p] + scores.yahtzee[p] + scores.chance[p];
+    otherScores["lowertotal"][p] =
+        scores["threeofakind"][p] + scores["fourofakind"][p] + scores["fullhouse"][p] +
+        scores["smallstraight"][p] + scores["largestraight"][p] + scores["yahtzee"][p] +
+        scores["chance"][p] + scores["yahtzeebonus"][p];
     
-    otherScores.total[p] = otherScores.upperbonus[p] + otherScores.uppertotal[p] + otherScores.lowertotal[p];
+    otherScores["total"][p] = 
+        otherScores["upperbonus"][p] + otherScores["uppertotal"][p] +
+        otherScores["lowertotal"][p];
     
 
     for(let i in otherScores) {
