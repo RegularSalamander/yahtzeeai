@@ -1,7 +1,7 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     padding: 20px;
-    background: oldlace;
+    background: whitesmoke;
 }
 
 main {
@@ -50,7 +50,7 @@ select {
     font-size: 16;
     border-radius: 10px;
     height: 35px;
-    background: #EBD7FA;
+    background: whitesmoke;
     border: 1px dashed black;
 }
 
@@ -78,7 +78,7 @@ button:disabled {
 }
 
 table {
-    background: #EBD7FA;
+    background: whitesmoke;
     border: 1px solid black;
     border-collapse: collapse;
     flex: 1;

@@ -3,6 +3,8 @@ const repeatGame = true;
 let gamesCounted = 0;
 let averageScore = 0;
 
+const montecarlosearches = 100;
+
 function agentChoose(game, name) {
     if(game.state == "initial") {
         clickRoll();
@@ -19,35 +21,32 @@ function agentChoose(game, name) {
         return;
     }
 
-    if(name == "random") {
-        if(game.state != "final") {
-            let toRoll = [false,false,false,false,false]
-            for(let i = 0; i < 5; i++) {
-                toRoll[i] = Math.random() < 0.5;
-            }
-            setRolling(toRoll);
-            clickRoll();
-        } else {
+    let name1 = name.split("/")[0];
+    let name2 = name.split("/")[1];
+
+    if(game.state == "final") {
+        if(name2 == "random") {
             let choice = scoreOptions[randint(0, scoreOptions.length-1)];
             clickScore(`player${turn}score${choice}`);
+        } else if(name2 == "weighted") {
+            clickScore(`player${turn}score${getWeightedRandomScore(game.scoreOptions)}`);
+        } else if(name2 == "greedy") {
+            clickScore(`player${turn}score${getBestScore(game.scoreOptions)}`);
         }
-    } else if(name == "randombest") {
-        if(game.state != "final") {
+    } else {
+        if(name1 == "random") {
             let toRoll = [false,false,false,false,false]
             for(let i = 0; i < 5; i++) {
                 toRoll[i] = Math.random() < 0.5;
             }
             setRolling(toRoll);
             clickRoll();
-        } else {
-            clickScore(`player${turn}score${getBestScore(game.scoreOptions)}`);
-        }
-    } else if(name == "expectedbestgreedy") {
-        if(game.state != "final") {
-            setRolling(bestMonteCarlo(1000));
+        } else if(name1 == "best") {
+            setRolling(monteCarlo(getMaxOfScore, montecarlosearches));
             clickRoll();
-        } else {
-            clickScore(`player${turn}score${getBestScore(game.scoreOptions)}`);
+        } else if(name1 == "average") {
+            setRolling(monteCarlo(getAverageOfScore, montecarlosearches));
+            clickRoll();
         }
     }
 }
@@ -80,12 +79,43 @@ function getBestScore(options) {
     return best;
 }
 
+function getWeightedRandomScore(options) {
+    let total = 0;
+
+    for(let i in options) {
+        if(options[i] != null) {
+            total += options[i] + 1;
+        }
+    }
+    let choice = randint(1, total);
+
+    for(let i in options) {
+        if(options[i] != null) {
+            choice -= options[i] + 1;
+            if(choice <= 0) {
+                return i;
+            }
+        }
+    }
+}
+
 function getMaxOfScore(options) {
     let max = 0;
     for(let i in options)
         if(options[i] != null && options[i] >= max)
             max = options[i];
     return max;
+}
+
+function getAverageOfScore(options) {
+    let avg = 0;
+    let n = 0;
+    for(let i in options)
+        if(options[i] != null) {
+            n++;
+            avg = ((avg * (n-1)) + options[i]) / n;
+        }
+    return avg;
 }
 
 function holdChoices() {
@@ -96,9 +126,9 @@ function holdChoices() {
     return [...holdChoices(...arguments, false), ...holdChoices(...arguments, true)]
 }
 
-function bestMonteCarlo(round1, round2) {
+function monteCarlo(func, round1, round2) {
     let simgame = new Yahtzee();
-    for(let i in games[turn]) {
+    for(let i in games[turn].score) {
         simgame.score[i] = games[turn].score[i];
     }
 
@@ -113,7 +143,7 @@ function bestMonteCarlo(round1, round2) {
             simgame.setDiceRandom(moves[i]);
             simgame.calcScores();
             
-            score += getMaxOfScore(simgame.scoreOptions);
+            score += func(simgame.scoreOptions);
         }
 
         if(score >= max) {
@@ -134,6 +164,8 @@ function scoreAverage(score) {
         averageScore = (averageScore * gamesCounted + score)/(gamesCounted + 1);
     gamesCounted++;
     
-    console.log(gamesCounted, averageScore);
-    setTimeout(resetGame, 100);
+    if(gamesCounted%500 == 0)
+        $(`averagedata2`).innerHTML = `${gamesCounted}    ${Math.round(averageScore*10)/10}`
+    $(`averagedata`).innerHTML = `${gamesCounted}    ${Math.round(averageScore*10)/10}`
+    setTimeout(resetGame, 0);
 }
