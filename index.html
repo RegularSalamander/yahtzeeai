@@ -179,41 +179,29 @@
             <div class="f1 fcol">
                 <div class="maincontainer f1 fcol">
                     <select id="agentselect0">
-                        <option selected="selected" value="player">Player</option>
+                        <option value="player">Player</option>
 
                         <option value="random/random">Random Random</option>
                         <option value="random/greedy">Random Greedy</option>
-                        <option value="random/weighted">Random Weighted-Random</option>
-
-                        <option value="best/random">Expected-Best Random</option>
                         <option value="best/greedy">Expected-Best Greedy</option>
-                        <option value="best/weighted">Expected-Best Weighted-Random</option>
-
-                        <option value="average/random">Expected-Average Random</option>
                         <option value="average/greedy">Expected-Average Greedy</option>
-                        <option value="average/weighted">Expected-Average Weighted-Random</option>
                     </select>
                     <select id="agentselect1">
                         <option value="player">Player</option>
-                        <option value="noopponent">No Opponent</option>
+                        
+                        <option selected="selected" value="noopponent">No Opponent</option>
 
                         <option value="random/random">Random Random</option>
                         <option value="random/greedy">Random Greedy</option>
-                        <option value="random/weighted">Random Weighted-Random</option>
-
-                        <option value="best/random">Expected-Best Random</option>
-                        <option selected="selected" value="best/greedy">Expected-Best Greedy</option>
-                        <option value="best/weighted">Expected-Best Weighted-Random</option>
-
-                        <option value="average/random">Expected-Average Random</option>
+                        <option value="best/greedy">Expected-Best Greedy</option>
                         <option value="average/greedy">Expected-Average Greedy</option>
-                        <option value="average/weighted">Expected-Average Weighted-Random</option>
                     </select>
 
                     <p id="averagedata"></p>
                     <p id="averagedata2"></p>
     
-                    <p id="opponentinfo">Placeholder. Info about AI/opponent goes here.</p>
+                    <p id="opponent0info">Placeholder. Info about AI/opponent goes here.</p>
+                    <p id="opponent1info">Placeholder. Info about AI/opponent goes here.</p>
 
                     <button onclick="resetGame()">Reset Game</button>
                 </div>

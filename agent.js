@@ -1,4 +1,13 @@
-const repeatGame = false;
+const agentInfo = {
+    "player": "<b>Player</b>",
+    "noopponent": "None",
+    "random/random": "<b>Random Random</b> selects dice to roll randomly and selects score randomly.",
+    "random/greedy": "<b>Random Greedy</b> selects dice to roll randomly and then selects the highest available score.",
+    "best/greedy": "<b>Expected-Best Greedy</b> selects dice to roll to maximize the expected value of the highest available score and then selects the highest available score.",
+    "average/greedy": "<b>Expected-Average Greedy</b> selects dice to roll to maximize the expected value of the average of score options and then selects the highest available score."
+}
+
+const repeatGame = true;
 
 let gamesCounted = 0;
 let averageScore = 0;
@@ -30,6 +39,8 @@ function agentChoose(game, name) {
             clickScore(`player${turn}score${choice}`);
         } else if(name2 == "weighted") {
             clickScore(`player${turn}score${getWeightedRandomScore(game.scoreOptions)}`);
+        } else if(name2 == "modweighted") {
+            clickScore(`player${turn}score${getWeightedRandomScore(game.scoreOptions, true)}`);
         } else if(name2 == "greedy") {
             clickScore(`player${turn}score${getBestScore(game.scoreOptions)}`);
         }
@@ -79,19 +90,20 @@ function getBestScore(options) {
     return best;
 }
 
-function getWeightedRandomScore(options) {
+function getWeightedRandomScore(options, modified) {
     let total = 0;
+    let mod = modified ? 1 : 0;
 
     for(let i in options) {
         if(options[i] != null) {
-            total += options[i] + 1;
+            total += options[i] + mod;
         }
     }
-    let choice = randint(1, total);
+    let choice = randint(0, total);
 
     for(let i in options) {
         if(options[i] != null) {
-            choice -= options[i] + 1;
+            choice -= options[i] + mod;
             if(choice <= 0) {
                 return i;
             }

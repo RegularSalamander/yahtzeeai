@@ -9,7 +9,7 @@ let games = [
     new Yahtzee()
 ]
 
-let agentnames = [
+let agentNames = [
     "player",
     "noopponent"
 ];
@@ -22,7 +22,7 @@ function clickDie(id, byPlayer) {
     if(games[turn].state == "initial" ||
         currentlyRolling ||
         turn != parseInt(obj.id.charAt(6)) ||
-        (byPlayer && agentnames[turn] != "player")
+        (byPlayer && agentNames[turn] != "player")
     ) return;
 
     let rolling = obj.getAttribute("data-rolling") == "true";
@@ -32,7 +32,7 @@ function clickDie(id, byPlayer) {
 function clickRoll(byPlayer) {
     if(games[turn].state == "final" ||
         currentlyRolling ||
-        (byPlayer && agentnames[turn] != "player")
+        (byPlayer && agentNames[turn] != "player")
     ) return; //no rolling allowed
     
     currentlyRolling = true;
@@ -51,14 +51,14 @@ function clickRoll(byPlayer) {
 //dice rolling logic and animation
 function rollDiceAnimation(timeLeft, whichRolling) {
     //end of animation
-    if(timeLeft == 0) {
+    if(timeLeft == 0 || true) {
         currentlyRolling = false;
         games[turn].rollDice(whichRolling);
         reflectDice();
         reflectScore();
 
-        if(agentnames[turn] != "player") {
-            agentChoose(games[turn], agentnames[turn]);
+        if(agentNames[turn] != "player") {
+            agentChoose(games[turn], agentNames[turn]);
         }
         return;
     }
@@ -82,7 +82,7 @@ function clickScore(id, byPlayer) {
     if(obj.getAttribute("data-clickable") != "true" ||
        games[turn].state == "initial" ||
        turn != parseInt(obj.id.charAt(6))  ||
-       (byPlayer && agentnames[turn] != "player")
+       (byPlayer && agentNames[turn] != "player")
     ) return;
 
     //remove "playerNscore" from beginning of id
@@ -123,10 +123,10 @@ function changeTurn() {
     games[turn].calcScoreTotals();
     reflectScoreTotals();
 
-    if(agentnames[turn] == "noopponent") {
+    if(agentNames[turn] == "noopponent") {
         changeTurn();
-    } else if(agentnames[turn] != "player") {
-        agentChoose(games[turn], agentnames[turn]);
+    } else if(agentNames[turn] != "player") {
+        agentChoose(games[turn], agentNames[turn]);
     }
 }
 
@@ -159,6 +159,11 @@ function reflectScoreTotals(p) {
     }
 }
 
+function reflectOpponents() {
+    $(`opponent0info`).innerHTML = "P1: " + agentInfo[agentNames[0]];
+    $(`opponent1info`).innerHTML = "P2: " + agentInfo[agentNames[1]];
+}
+
 function resetGame() {
     turn = 0;
 
@@ -181,10 +186,16 @@ function resetGame() {
 
     reflectScoreTotals();
 
-    agentnames[0] = $(`agentselect0`).value;
-    agentnames[1] = $(`agentselect1`).value;
+    agentNames[0] = $(`agentselect0`).value;
+    agentNames[1] = $(`agentselect1`).value;
 
-    if(agentnames[turn] != "player") {
-        agentChoose(games[turn], agentnames[turn]);
+    reflectOpponents();
+
+    if(agentNames[turn] != "player") {
+        agentChoose(games[turn], agentNames[turn]);
     }
+}
+
+window.onload = () => {
+    resetGame();
 }
