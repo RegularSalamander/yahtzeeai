@@ -45,6 +45,13 @@ h1 {
     background: antiquewhite;
 }
 
+.tablecontainer {
+    display: flex;
+    flex: 1;
+
+    overflow: auto;
+}
+
 select {
     width: 100%;
     font-size: 16;
@@ -88,7 +95,7 @@ table {
 th, td {
     border-top: 1px solid black;
     border-bottom: 1px solid black;
-    padding: 5px;
+    padding: 1px;
 
     width: 30%;
 }
