@@ -1,4 +1,4 @@
-const repeatGame = true;
+const repeatGame = false;
 
 let gamesCounted = 0;
 let averageScore = 0;
@@ -164,7 +164,7 @@ function scoreAverage(score) {
         averageScore = (averageScore * gamesCounted + score)/(gamesCounted + 1);
     gamesCounted++;
     
-    if(gamesCounted%500 == 0)
+    if(gamesCounted%100 == 0)
         $(`averagedata2`).innerHTML = `${gamesCounted}    ${Math.round(averageScore*10)/10}`
     $(`averagedata`).innerHTML = `${gamesCounted}    ${Math.round(averageScore*10)/10}`
     setTimeout(resetGame, 0);
