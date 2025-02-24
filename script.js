@@ -14,6 +14,16 @@ let agentNames = [
     "noopponent"
 ];
 
+let options = {
+    "rollani": true,
+    "delayai": true
+}
+
+function setOptions() {
+    for(let i in options)
+        options[i] = $(`options${i}`).checked;
+}
+
 //handles switching a die from rolling vs held state
 function clickDie(id, byPlayer) {
     let obj = $(id);
@@ -51,7 +61,7 @@ function clickRoll(byPlayer) {
 //dice rolling logic and animation
 function rollDiceAnimation(timeLeft, whichRolling) {
     //end of animation
-    if(timeLeft == 0 || true) {
+    if(timeLeft == 0 || !options["rollani"]) {
         currentlyRolling = false;
         games[turn].rollDice(whichRolling);
         reflectDice();

@@ -7,16 +7,31 @@ const agentInfo = {
     "average/greedy": "<b>Expected-Average Greedy</b> selects dice to roll to maximize the expected value of the average of score options and then selects the highest available score."
 }
 
-const repeatGame = true;
+const repeatGame = false;
 
 let gamesCounted = 0;
 let averageScore = 0;
 
-const montecarlosearches = 100;
+const montecarlosearches = 1000;
+
+function aiClickScore(choice) {
+    if(options["delayai"])
+        setTimeout(()=>clickScore(choice), 1000)
+    else
+        clickScore(choice)
+}
+
+function aiClickRoll() {
+    if(options["delayai"])
+        setTimeout(()=>clickRoll(), 1000)
+    else
+        clickRoll()
+}
+
 
 function agentChoose(game, name) {
     if(game.state == "initial") {
-        clickRoll();
+        aiClickRoll();
         return;
     }
 
@@ -36,13 +51,13 @@ function agentChoose(game, name) {
     if(game.state == "final") {
         if(name2 == "random") {
             let choice = scoreOptions[randint(0, scoreOptions.length-1)];
-            clickScore(`player${turn}score${choice}`);
+            aiClickScore(`player${turn}score${choice}`);
         } else if(name2 == "weighted") {
-            clickScore(`player${turn}score${getWeightedRandomScore(game.scoreOptions)}`);
+            aiClickScore(`player${turn}score${getWeightedRandomScore(game.scoreOptions)}`);
         } else if(name2 == "modweighted") {
-            clickScore(`player${turn}score${getWeightedRandomScore(game.scoreOptions, true)}`);
+            aiClickScore(`player${turn}score${getWeightedRandomScore(game.scoreOptions, true)}`);
         } else if(name2 == "greedy") {
-            clickScore(`player${turn}score${getBestScore(game.scoreOptions)}`);
+            aiClickScore(`player${turn}score${getBestScore(game.scoreOptions)}`);
         }
     } else {
         if(name1 == "random") {
@@ -51,13 +66,13 @@ function agentChoose(game, name) {
                 toRoll[i] = Math.random() < 0.5;
             }
             setRolling(toRoll);
-            clickRoll();
+            aiClickRoll();
         } else if(name1 == "best") {
             setRolling(monteCarlo(getMaxOfScore, montecarlosearches));
-            clickRoll();
+            aiClickRoll();
         } else if(name1 == "average") {
             setRolling(monteCarlo(getAverageOfScore, montecarlosearches));
-            clickRoll();
+            aiClickRoll();
         }
     }
 }
